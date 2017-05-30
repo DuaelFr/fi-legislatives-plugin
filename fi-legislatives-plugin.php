@@ -123,3 +123,41 @@ add_action('init', function() {
   }
 
 });
+
+/**
+ * Custom shortcode for the main website.
+ *
+ * Lists all the referenced sites into a unordered HTML list.
+ * Warning: this can only be used on main site (network head).
+ */
+add_shortcode('fi-all-sites', function ($atts) {
+  $replacement = '';
+
+  // Get all published sites.
+  query_posts(array(
+    'post_type' => 'sites',
+    'showposts' => -1
+  ));
+
+  // Build the list.
+  if (have_posts()) {
+    $replacement .= '<ul class="fi-all-sites">';
+    while (have_posts()) {
+      the_post();
+      $replacement .= '<li>';
+      $replacement .= '<a href="' . get_field('link') . '">';
+      if ($picture = get_field('picture')) {
+        $replacement .= '<img src="' . $picture['url'] . '" alt="' . the_title('', '', false) . '" width="' . $picture['width'] . '" height="' . $picture['height'] . '">';
+      }
+      $replacement .= '<p><strong>' . get_field('number') . ' - ' . get_field('candidates') . '</strong></p>';
+      $replacement .= '<p>' . the_title('', '', false) . '</p>';
+      $replacement .= '<p><em>' . get_field('link') . '</em></p>';
+      $replacement .= '</a>';
+      $replacement .= '</li>';
+    }
+    $replacement .= '</ul>';
+  }
+  wp_reset_query();
+
+  return $replacement;
+});
