@@ -3,6 +3,7 @@
 Plugin Name: FI Léglistatives Main
 Description: Template project main site plugin.
 Depends: Advanced Custom Fields
+Version: 1.0.0
 */
 
 add_action('init', function() {
