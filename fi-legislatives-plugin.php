@@ -5,6 +5,11 @@ Description: Template project main site plugin.
 Depends: Advanced Custom Fields
 */
 
+add_action('init', function() {
+  // Register styles.
+  wp_register_style('fi-all-sites', plugins_url('css/fi-all-sites.css', __FILE__));
+});
+
 /**
  * Create the 'sites' post type.
  */
@@ -158,6 +163,9 @@ add_shortcode('fi-all-sites', function ($atts) {
     $replacement .= '</ul>';
   }
   wp_reset_query();
+
+  // Inject custom stylesheet in the page.
+  wp_enqueue_style('fi-all-sites');
 
   return $replacement;
 });
